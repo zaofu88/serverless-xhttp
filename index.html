@@ -1,11 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Network - Protect Earth</title>
+    <title>AI 深度解析：LLM 原理、训练与 PEFT 技术</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 科技风格配色方案 */
+        :root {
+            --primary: #1e3a8a; /* 深蓝色 */
+            --secondary: #3b82f6; /* 亮蓝色/强调色 */
+            --accent: #10b981; /* 绿色/高亮色 */
+            --bg-dark: #0f172a; /* 深色背景 */
+            --bg-light: #1e293b; /* 浅深色背景 */
+            --text-light: #f1f5f9; /* 浅色文本 */
+            --text-muted: #94a3b8; /* 灰色文本 */
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,36 +24,26 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        :root {
-            --primary: #2e7d32;
-            --secondary: #4caf50;
-            --accent: #8bc34a;
-            --light: #e8f5e9;
-            --dark: #1b5e20;
-            --text: #333333;
-            --white: #ffffff;
-        }
-
         body {
-            background-color: var(--light);
-            color: var(--text);
-            line-height: 1.6;
-        }
-
-        header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.8;
         }
 
         .container {
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        /* Header / Navigation */
+        header {
+            background-color: var(--bg-light);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .nav-container {
@@ -52,15 +53,9 @@
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
             font-size: 1.8rem;
             font-weight: 700;
-        }
-
-        .logo i {
-            font-size: 2rem;
+            color: var(--secondary);
         }
 
         nav ul {
@@ -68,652 +63,440 @@
             list-style: none;
         }
 
-        nav ul li {
-            margin-left: 2rem;
-        }
-
         nav ul li a {
-            color: var(--white);
+            color: var(--text-light);
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            margin-left: 2rem;
             padding: 0.5rem 0;
-            position: relative;
+            transition: color 0.3s;
         }
 
         nav ul li a:hover {
             color: var(--accent);
         }
 
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
+        /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
+            padding: 8rem 0;
+            text-align: center;
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('https://via.placeholder.com/2000x800/1e3a8a/3b82f6?text=AI+Deep+Dive');
             background-size: cover;
             background-position: center;
-            height: 80vh;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: var(--white);
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
+            border-bottom: 3px solid var(--secondary);
         }
 
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: var(--secondary);
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
 
         .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 2rem;
         }
 
         .btn {
             display: inline-block;
             background-color: var(--accent);
-            color: var(--white);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
+            color: var(--bg-dark);
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
         }
 
         .btn:hover {
-            background-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            background-color: #059669;
+            box-shadow: 0 0 15px var(--accent);
         }
 
+        /* Sections */
         section {
             padding: 5rem 0;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
         .section-title h2 {
             font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: var(--accent);
-            border-radius: 2px;
-        }
-
-        .section-title p {
-            color: var(--text);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .about-img {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .about-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-
-        .about-img:hover img {
-            transform: scale(1.05);
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 2rem 1rem;
-            background-color: var(--white);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .stat-item i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .stat-item h3 {
-            font-size: 2.5rem;
-            color: var(--dark);
+            color: var(--accent);
             margin-bottom: 0.5rem;
         }
 
-        .stat-item p {
-            color: var(--text);
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+        
+        /* LLM PRINCIPLES */
+        .llm-principles {
+            background-color: var(--bg-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .initiatives {
-            background-color: var(--white);
+        .principle-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: var(--bg-dark);
+            border-left: 5px solid var(--secondary);
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
 
-        .initiatives-grid {
+        .principle-item i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .principle-content h3 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        /* MODEL TYPES */
+        .model-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
         }
 
-        .initiative-card {
-            background-color: var(--light);
+        .model-card {
+            background-color: var(--bg-light);
+            padding: 2rem;
             border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .initiative-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .initiative-img {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .initiative-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .initiative-card:hover .initiative-img img {
-            transform: scale(1.1);
-        }
-
-        .initiative-content {
-            padding: 1.5rem;
-        }
-
-        .initiative-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
-
-        .initiative-content p {
-            margin-bottom: 1.5rem;
-        }
-
-        .cta {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
             text-align: center;
-            padding: 5rem 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--primary);
         }
 
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta .btn {
-            background-color: var(--white);
-            color: var(--primary);
-        }
-
-        .cta .btn:hover {
-            background-color: var(--accent);
-            color: var(--white);
-        }
-
-        footer {
-            background-color: var(--dark);
-            color: var(--white);
-            padding: 3rem 0 1rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--accent);
-        }
-
-        .footer-column p {
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links li a {
-            color: var(--light);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links li a:hover {
-            color: var(--accent);
-            padding-left: 5px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: var(--white);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background-color: var(--accent);
+        .model-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
         }
 
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .model-card i {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
         }
 
-        .mobile-menu {
-            display: none;
+        .model-card h3 {
             font-size: 1.5rem;
-            cursor: pointer;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
         }
 
+        /* TRAINING SECTION */
+        .training-steps {
+            background-color: var(--bg-light);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            padding: 1.5rem 0;
+            border-bottom: 1px dashed var(--primary);
+            position: relative;
+            padding-left: 4.5rem;
+        }
+
+        .step-list li:last-child {
+            border-bottom: none;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3rem;
+            height: 3rem;
+            line-height: 3rem;
+            text-align: center;
+            background-color: var(--accent);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .step-list h4 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-list p {
+            color: var(--text-muted);
+        }
+
+        /* PEFT SECTION (New) */
+        .peft-title {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--primary);
+        }
+        .peft-title h3 {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .peft-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .peft-card {
+            background-color: var(--bg-dark);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--secondary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .peft-card h4 {
+            font-size: 1.6rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-dark);
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 3px solid var(--primary);
+        }
+
+        /* Responsive */
         @media (max-width: 992px) {
-            .about-content {
+            .model-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .peft-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .initiatives-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
+            .principle-item {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
-            .hero p {
-                font-size: 1.1rem;
+            .model-grid {
+                grid-template-columns: 1fr;
             }
-            
             nav ul {
                 display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: var(--primary);
-                flex-direction: column;
-                padding: 1rem 0;
-                text-align: center;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
             }
-            
-            nav ul.active {
-                display: flex;
+            .nav-container {
+                justify-content: center;
             }
-            
-            nav ul li {
-                margin: 0;
-                padding: 0.8rem 0;
+            .step-list li {
+                padding-left: 3.5rem;
             }
-            
-            .mobile-menu {
-                display: block;
+            .step-list li::before {
+                width: 2.5rem;
+                height: 2.5rem;
+                line-height: 2.5rem;
+                font-size: 1.2rem;
             }
-            
-            .initiatives-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Animation for stats counter */
-        .counter {
-            transition: all 0.5s ease;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container nav-container">
             <div class="logo">
-                <i class="fas fa-seedling"></i>
-                <span>Green Network</span>
+                <i class="fas fa-microchip"></i> AI Deep Dive
             </div>
             <nav>
-                <div class="mobile-menu">
-                    <i class="fas fa-bars"></i>
-                </div>
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#initiatives">Initiatives</a></li>
-                    <li><a href="#get-involved">Get Involved</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#llm-principle">LLM 原理</a></li>
+                    <li><a href="#model-types">模型种类</a></li>
+                    <li><a href="#training">训练方法</a></li>
+                    <li><a href="#peft">PEFT 技术</a></li>
+                    <li><a href="#contact">联系我们</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="container hero-content">
-            <h1>Protect Our Planet, Preserve Our Future</h1>
-            <p>Join the global movement to create a sustainable world through conservation, education, and community action.</p>
-            <a href="#get-involved" class="btn">Join Our Network</a>
+        <div class="container">
+            <h1>大语言模型 (LLM) 深度解析</h1>
+            <p>从 Transformer 架构到复杂的训练范式，探索人工智能核心技术的演进与实现。</p>
+            <a href="#llm-principle" class="btn">开始学习 <i class="fas fa-arrow-down"></i></a>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about">
+    <section class="llm-principles" id="llm-principle">
         <div class="container">
             <div class="section-title">
-                <h2>About Green Network</h2>
-                <p>We are a global community dedicated to environmental protection and sustainable development.</p>
+                <h2>Transformer 架构与 LLM 核心</h2>
+                <p>一切始于 'Attention is All You Need'，Transformer 奠定了现代 AI 的基石。</p>
             </div>
-            <div class="about-content">
-                <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Team planting trees">
-                </div>
-                <div class="about-text">
-                    <h3>Our Mission</h3>
-                    <p>Green Network is committed to creating a sustainable future by protecting natural ecosystems, promoting renewable energy, and empowering communities to take environmental action.</p>
-                    <p>Founded in 2010, we've grown from a small grassroots organization to an international network with over 50,000 members across 120 countries.</p>
-                    <p>Our approach combines scientific research, community engagement, and policy advocacy to address the most pressing environmental challenges of our time.</p>
-                    <a href="#" class="btn">Learn More</a>
+            
+            <div class="principle-item">
+                <i class="fas fa-layer-group"></i>
+                <div class="principle-content">
+                    <h3>1. 编码器-解码器 (Encoder-Decoder)</h3>
+                    <p>原始 Transformer 结构，由两部分组成，擅长机器翻译等序列到序列任务。编码器负责理解输入，解码器负责生成输出。</p>
                 </div>
             </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <i class="fas fa-tree"></i>
-                    <h3 class="counter" data-target="2500000">0</h3>
-                    <p>Trees Planted</p>
+
+            <div class="principle-item">
+                <i class="fas fa-brain"></i>
+                <div class="principle-content">
+                    <h3>2. 自注意力机制 (Self-Attention)</h3>
+                    <p>核心机制，允许模型在处理序列中的每个词时，能够“关注”输入序列中所有其他词的重要性，从而理解长距离依赖关系和上下文。</p>
                 </div>
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <h3 class="counter" data-target="50000">0</h3>
-                    <p>Active Members</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-globe-americas"></i>
-                    <h3 class="counter" data-target="120">0</h3>
-                    <p>Countries Reached</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-recycle"></i>
-                    <h3 class="counter" data-target="1500">0</h3>
-                    <p>Cleanup Projects</p>
+            </div>
+
+            <div class="principle-item">
+                <i class="fas fa-infinity"></i>
+                <div class="principle-content">
+                    <h3>3. 规模化与涌现能力 (Scaling & Emergence)</h3>
+                    <p>LLM 的成功在于规模。当模型参数量、数据量和计算量达到临界点时，模型会展现出在小模型中不具备的新能力，即“涌现能力”（如推理、代码生成）。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Initiatives Section -->
-    <section class="initiatives" id="initiatives">
+    <section id="model-types">
         <div class="container">
             <div class="section-title">
-                <h2>Our Initiatives</h2>
-                <p>Discover the key programs and projects we're implementing to protect our planet.</p>
+                <h2>各类 AI 模型架构一览</h2>
+                <p>根据 Transformer 结构的使用方式，主流模型可分为三类：</p>
             </div>
-            <div class="initiatives-grid">
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://dialogue.earth/content/uploads/2021/04/lessons-from-the-rush-to-reforest-china-dialogue-2400x1599.jpg" alt="Reforestation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Global Reforestation</h3>
-                        <p>Planting millions of trees worldwide to restore ecosystems, combat climate change, and protect biodiversity.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
+
+            <div class="model-grid">
+                <div class="model-card">
+                    <i class="fas fa-lock"></i>
+                    <h3>仅编码器模型 (BERT)</h3>
+                    <p>**特点:** 仅使用编码器层，擅长理解和表示文本。输出是上下文向量，而非生成新文本。</p>
+                    <p class="mt-2 text-muted">**应用:** 情感分析、文本分类、命名实体识别。</p>
                 </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Ocean Conservation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Ocean Conservation</h3>
-                        <p>Protecting marine ecosystems, reducing plastic pollution, and promoting sustainable fishing practices.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
+                
+                <div class="model-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>仅解码器模型 (GPT)</h3>
+                    <p>**特点:** 仅使用解码器层，但带有掩码自注意力机制，只能根据前面的文本预测下一个词，适合生成任务。</p>
+                    <p class="mt-2 text-muted">**应用:** 文本生成、对话系统、代码生成。</p>
                 </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="Renewable Energy">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Renewable Energy</h3>
-                        <p>Promoting solar, wind, and other clean energy sources to reduce dependence on fossil fuels.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
+
+                <div class="model-card">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>编码器-解码器模型 (T5/BART)</h3>
+                    <p>**特点:** 结合了完整的编码器和解码器。适用于需要复杂输入理解和精准输出的任务。</p>
+                    <p class="mt-2 text-muted">**应用:** 机器翻译、文本摘要、问答。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta" id="get-involved">
+    <section class="llm-principles" id="training">
         <div class="container">
-            <h2>Join Our Global Movement</h2>
-            <p>Together, we can create a sustainable future for generations to come. Every action counts, no matter how small.</p>
-            <a href="#" class="btn">Become a Member</a>
+            <div class="section-title">
+                <h2>大模型训练的四个阶段</h2>
+                <p>一个功能强大的 LLM 需要经过多轮精细的训练和对齐过程。</p>
+            </div>
+
+            <div class="training-steps">
+                <ul class="step-list">
+                    <li>
+                        <h4>阶段一：预训练 (Pre-training)</h4>
+                        <p>在海量无标签数据（如整个互联网的文本）上进行自监督学习，目标是预测下一个词或掩码词，从而学习语言的基本语法、语义和世界知识。</p>
+                    </li>
+                    <li>
+                        <h4>阶段二：指令微调 (Instruction Tuning)</h4>
+                        <p>使用人类编写的「指令-回答」数据集进行有监督学习，使模型学会遵循指令和回答问题，将预训练的知识转化为可用的技能。</p>
+                    </li>
+                    <li>
+                        <h4>阶段三：基于人类反馈的强化学习 (RLHF)</h4>
+                        <p>核心对齐步骤。通过人类标注员对模型输出进行评分，训练一个奖励模型 (RM)，然后利用 RM 的反馈，通过强化学习微调 LLM，使其输出更符合人类偏好、更安全。</p>
+                    </li>
+                    <li>
+                        <h4>阶段四：部署与持续优化 (Deployment & Iteration)</h4>
+                        <p>将模型部署到实际应用中，收集用户反馈和真实世界数据，进行持续的微调、安全审计和迭代更新，保持模型的时效性和可靠性。</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="peft-title" id="peft">
+                <h3>🚀 高效微调技术 (PEFT)：LoRA & QLoRA</h3>
+                <p>解决全量微调高昂成本和时间的技术，仅训练少量参数即可达到接近全量微调的效果。</p>
+            </div>
+
+            <div class="peft-grid">
+                <div class="peft-card">
+                    <h4><i class="fas fa-compress"></i> LoRA (低秩适配)</h4>
+                    <p>**原理:** 冻结预训练模型的权重，并在每一层注入小的、可训练的低秩矩阵 $\mathbf{A}$ 和 $\mathbf{B}$。在微调过程中只更新这两个矩阵，大大减少了所需训练的参数量和显存消耗。</p>
+                    <p class="text-muted mt-2">**优势:** 训练速度快，模型权重文件极小 (MB 级别)，方便部署和切换任务。</p>
+                </div>
+                <div class="peft-card">
+                    <h4><i class="fas fa-bolt"></i> QLoRA (量化 LoRA)</h4>
+                    <p>**原理:** 在 LoRA 的基础上，将原始预训练模型权重进行 4-bit 量化 (NF4)，从而大幅降低模型加载和推理时的显存占用。训练时，梯度通过量化权重回传。</p>
+                    <p class="text-muted mt-2">**优势:** 进一步降低显存需求，使得在消费级 GPU 上微调百亿甚至千亿参数模型成为可能。</p>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <!-- Footer -->
     <footer id="contact">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Green Network</h3>
-                    <p>We are dedicated to protecting our planet through collaborative action, education, and sustainable solutions.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#initiatives">Initiatives</a></li>
-                        <li><a href="#get-involved">Get Involved</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Our Programs</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Reforestation</a></li>
-                        <li><a href="#">Ocean Cleanup</a></li>
-                        <li><a href="#">Wildlife Protection</a></li>
-                        <li><a href="#">Climate Education</a></li>
-                        <li><a href="#">Sustainable Agriculture</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Copper Creek Drive, New York</p>
-                    <p><i class="fas fa-phone"></i> +1 (312) 171-0771</p>
-                    <p><i class="fas fa-envelope"></i> support@greennetwork.org</p>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 Green Network. All rights reserved.</p>
-            </div>
+            <p>数据科学与人工智能解析 | 探索前沿技术</p>
+            <p>&copy; 2025 AI Deep Dive. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('active');
-        });
-
-        // Counter Animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.counter');
-            const speed = 200; // The lower the slower
-            
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                
-                const inc = target / speed;
-                
-                if(count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(animateCounters, 1);
-                } else {
-                    counter.innerText = target;
-                }
-            });
-        }
-
-        // Initialize counters when page loads
-        window.addEventListener('load', animateCounters);
-
-        // Smooth scrolling for navigation links
+        // 简单的平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
                 const targetElement = document.querySelector(targetId);
-                if(targetElement) {
+                
+                if (targetElement) {
                     window.scrollTo({
-                        top: targetElement.offsetTop - 80,
+                        top: targetElement.offsetTop - 60, // 减去 Header 高度
                         behavior: 'smooth'
                     });
-                    
-                    // Close mobile menu if open
-                    document.querySelector('nav ul').classList.remove('active');
                 }
             });
         });
